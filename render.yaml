@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: qm-lawncare
+    runtime: node
+    plan: starter
+    region: ohio
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Optional: leave unset and the app uses RENDER_EXTERNAL_URL.
+      - key: SITE_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: OWNER_EMAIL
+        value: quinlanmarsh05@gmail.com
+      - key: OWNER_PASSWORD
+        sync: false
+      - key: OWNER_NAME
+        value: Quinlan Marsh

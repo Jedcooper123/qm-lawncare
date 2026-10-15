@@ -1,0 +1,110 @@
+[
+  {
+    "file": "01.jpg",
+    "category": "mowing",
+    "caption": "Precision Lawn Striping",
+    "alt": "Diagonal striped lawn"
+  },
+  {
+    "file": "02.jpg",
+    "category": "mowing",
+    "caption": "Checkerboard Mowing Pattern",
+    "alt": "Checkerboard lawn pattern"
+  },
+  {
+    "file": "03.jpg",
+    "category": "mowing",
+    "caption": "Clean Lines & Edges",
+    "alt": "Striped lawn with white fence"
+  },
+  {
+    "file": "04.jpg",
+    "category": "mowing",
+    "caption": "Large Property Mowing",
+    "alt": "Large property diamond mow pattern"
+  },
+  {
+    "file": "05.jpg",
+    "category": "mowing",
+    "caption": "Residential Lawn Care",
+    "alt": "Striped lawn near house"
+  },
+  {
+    "file": "06.jpg",
+    "category": "mowing",
+    "caption": "Curved Stripe Patterns",
+    "alt": "Curved wavy mowing stripes"
+  },
+  {
+    "file": "07.jpg",
+    "category": "mulching",
+    "caption": "Mulch Bed & Planting",
+    "alt": "Mulch bed with shrubs"
+  },
+  {
+    "file": "08.jpg",
+    "category": "mulching",
+    "caption": "Tree Ring Mulching",
+    "alt": "Mulch ring around weeping tree"
+  },
+  {
+    "file": "09.jpg",
+    "category": "mulching",
+    "caption": "Mailbox Landscape & Stone Edging",
+    "alt": "Mulch bed with stone edging around mailbox"
+  },
+  {
+    "file": "10.jpg",
+    "category": "landscaping",
+    "caption": "Front Yard Landscaping",
+    "alt": "Front yard landscape bed with shrubs"
+  },
+  {
+    "file": "11.jpg",
+    "category": "landscaping",
+    "caption": "Landscape Bed & Planting",
+    "alt": "Large mulch bed with planted trees"
+  },
+  {
+    "file": "12.jpg",
+    "category": "landscaping",
+    "caption": "Stone Retaining Wall",
+    "alt": "Stone retaining wall construction"
+  },
+  {
+    "file": "13.jpg",
+    "category": "landscaping",
+    "caption": "Bush Trimming & Shaping",
+    "alt": "Trimmed round bushes beside house"
+  },
+  {
+    "file": "14.jpg",
+    "category": "landscaping",
+    "caption": "Hedge & Bush Shaping",
+    "alt": "Shaped hedge and bushes"
+  },
+  {
+    "file": "15.jpg",
+    "category": "landscaping",
+    "caption": "Full Property Maintenance",
+    "alt": "Lawn with trees"
+  },
+  {
+    "file": "16.jpg",
+    "category": "landscaping",
+    "caption": "Property Transformation",
+    "alt": "Diamond striped lawn"
+  },
+  {
+    "file": "17.jpg",
+    "category": "landscaping",
+    "caption": "Expert Lawn & Yard Care",
+    "alt": "Checkerboard mow pattern"
+  },
+  {
+    "file": "18.jpg",
+    "category": "landscaping",
+    "caption": "Fenced Property Care",
+    "alt": "Mowed lawn with fence"
+  }
+]

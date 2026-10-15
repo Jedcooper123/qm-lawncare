@@ -1029,112 +1029,10 @@
       <button class="gf-btn active" data-filter="all">
         <i class="fa-solid fa-grip"></i> All Work
       </button>
-      <button class="gf-btn" data-filter="mowing">🌿 Lawn Mowing</button>
-      <button class="gf-btn" data-filter="mulching">🪵 Mulching</button>
-      <button class="gf-btn" data-filter="landscaping">🌳 Landscaping</button>
+<!--GALLERY_FILTERS-->
     </div>
 
-    <!-- LAWN MOWING -->
-    <div class="gallery-category-section" id="cat-mowing">
-      <div class="gallery-cat-header">
-        <h3>🌿 Lawn Mowing</h3>
-        <div class="gallery-cat-line"></div>
-      </div>
-      <div class="gallery-grid">
-        <div class="g-item" data-category="mowing">
-          <img src="IMG_1650.jpeg" alt="Diagonal striped lawn" loading="lazy" />
-          <div class="g-overlay"><span>Precision Lawn Striping</span></div>
-        </div>
-        <div class="g-item" data-category="mowing">
-          <img src="IMG_1715.jpeg" alt="Checkerboard lawn pattern" loading="lazy" />
-          <div class="g-overlay"><span>Checkerboard Mowing Pattern</span></div>
-        </div>
-        <div class="g-item" data-category="mowing">
-          <img src="IMG_2596.jpeg" alt="Striped lawn with white fence" loading="lazy" />
-          <div class="g-overlay"><span>Clean Lines &amp; Edges</span></div>
-        </div>
-        <div class="g-item" data-category="mowing">
-          <img src="IMG_2597.jpeg" alt="Large property diamond mow pattern" loading="lazy" />
-          <div class="g-overlay"><span>Large Property Mowing</span></div>
-        </div>
-        <div class="g-item" data-category="mowing">
-          <img src="IMG_2598.jpeg" alt="Striped lawn near house" loading="lazy" />
-          <div class="g-overlay"><span>Residential Lawn Care</span></div>
-        </div>
-        <div class="g-item" data-category="mowing">
-          <img src="IMG_2599.jpeg" alt="Curved wavy mowing stripes" loading="lazy" />
-          <div class="g-overlay"><span>Curved Stripe Patterns</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MULCHING -->
-    <div class="gallery-category-section" id="cat-mulching">
-      <div class="gallery-cat-header">
-        <h3>🪵 Mulching</h3>
-        <div class="gallery-cat-line"></div>
-      </div>
-      <div class="gallery-grid">
-        <div class="g-item" data-category="mulching">
-          <img src="510502370_122156325092475587_8955067726823217445_n.jpg" alt="Mulch bed with shrubs" loading="lazy" />
-          <div class="g-overlay"><span>Mulch Bed &amp; Planting</span></div>
-        </div>
-        <div class="g-item" data-category="mulching">
-          <img src="IMG_1785.jpeg" alt="Mulch ring around weeping tree" loading="lazy" />
-          <div class="g-overlay"><span>Tree Ring Mulching</span></div>
-        </div>
-        <div class="g-item" data-category="mulching">
-          <img src="IMG_1787.jpeg" alt="Mulch bed with stone edging around mailbox" loading="lazy" />
-          <div class="g-overlay"><span>Mailbox Landscape &amp; Stone Edging</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- LANDSCAPING -->
-    <div class="gallery-category-section" id="cat-landscaping">
-      <div class="gallery-cat-header">
-        <h3>🌳 Landscaping</h3>
-        <div class="gallery-cat-line"></div>
-      </div>
-      <div class="gallery-grid">
-        <div class="g-item" data-category="landscaping">
-          <img src="IMG_2577.jpeg" alt="Front yard landscape bed with shrubs" loading="lazy" />
-          <div class="g-overlay"><span>Front Yard Landscaping</span></div>
-        </div>
-        <div class="g-item" data-category="landscaping">
-          <img src="IMG_2611.jpeg" alt="Large mulch bed with planted trees" loading="lazy" />
-          <div class="g-overlay"><span>Landscape Bed &amp; Planting</span></div>
-        </div>
-        <div class="g-item" data-category="landscaping">
-          <img src="IMG_2608.jpeg" alt="Stone retaining wall construction" loading="lazy" />
-          <div class="g-overlay"><span>Stone Retaining Wall</span></div>
-        </div>
-        <div class="g-item" data-category="landscaping">
-          <img src="IMG_2024.jpeg" alt="Trimmed round bushes beside house" loading="lazy" />
-          <div class="g-overlay"><span>Bush Trimming &amp; Shaping</span></div>
-        </div>
-        <div class="g-item" data-category="landscaping">
-          <img src="IMG_2025.jpeg" alt="Shaped hedge and bushes" loading="lazy" />
-          <div class="g-overlay"><span>Hedge &amp; Bush Shaping</span></div>
-        </div>
-        <div class="g-item" data-category="landscaping">
-          <img src="499311317_122151909884475587_1797149120906485739_n.jpg" alt="Lawn with trees" loading="lazy" />
-          <div class="g-overlay"><span>Full Property Maintenance</span></div>
-        </div>
-        <div class="g-item" data-category="landscaping">
-          <img src="511568303_122156699588475587_873096673987176846_n.jpg" alt="Diamond striped lawn" loading="lazy" />
-          <div class="g-overlay"><span>Property Transformation</span></div>
-        </div>
-        <div class="g-item" data-category="landscaping">
-          <img src="511568303_122156699588475587_873096673987176846_n (1).jpg" alt="Checkerboard mow pattern" loading="lazy" />
-          <div class="g-overlay"><span>Expert Lawn &amp; Yard Care</span></div>
-        </div>
-        <div class="g-item" data-category="landscaping">
-          <img src="512645243_122156699624475587_7210956342731719392_n.jpg" alt="Mowed lawn with fence" loading="lazy" />
-          <div class="g-overlay"><span>Fenced Property Care</span></div>
-        </div>
-      </div>
-    </div>
+<!--GALLERY_SECTIONS-->
 
   </div>
 </section>
@@ -1502,11 +1400,12 @@
 
   /* ——— GALLERY FILTER ——— */
   const gfBtns = document.querySelectorAll('.gf-btn');
-  const catSections = {
-    mowing:      document.getElementById('cat-mowing'),
-    mulching:    document.getElementById('cat-mulching'),
-    landscaping: document.getElementById('cat-landscaping'),
-  };
+  /* Sections are written by the server, which leaves out any category
+     with no photos — so look up whichever ones are on the page. */
+  const catSections = {};
+  document.querySelectorAll('.gallery-category-section').forEach(sec => {
+    catSections[sec.id.replace('cat-', '')] = sec;
+  });
   gfBtns.forEach(btn => {
     btn.addEventListener('click', function () {
       gfBtns.forEach(b => b.classList.remove('active'));
