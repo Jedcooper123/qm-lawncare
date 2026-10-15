@@ -61,13 +61,16 @@
   /* ── Views ───────────────────────────────────────────────── */
   function showLogin() {
     $('portalView').hidden = true;
+    $('navActions').hidden = true;
     $('loginView').hidden = false;
   }
 
   async function showPortal(owner) {
     $('loginView').hidden = true;
     $('portalView').hidden = false;
-    $('hello').textContent = 'Signed in as ' + (owner.name || owner.email);
+    $('navActions').hidden = false;
+    const first = (owner.name || '').split(' ')[0];
+    $('hello').textContent = (first ? `Hi ${first} — ` : '') + 'add photos of your work and manage what shows on your website.';
     await refresh();
   }
 
@@ -110,12 +113,26 @@
   }
 
   /* ── Upload ──────────────────────────────────────────────── */
+  /* Labels come from the server as "🌿 Lawn Mowing" — the same text as the
+     website's filter buttons. The tiles show the emoji as their icon. */
+  const splitLabel = (label) => {
+    const [icon, ...rest] = label.split(' ');
+    return { icon, name: rest.join(' ') };
+  };
+
   function renderPicker() {
     const box = $('catPicker');
-    box.replaceChildren(...state.categories.map((c) => el('button', {
-      type: 'button', role: 'radio', 'aria-checked': String(c.key === state.uploadCategory),
-      onclick: () => { state.uploadCategory = c.key; renderPicker(); },
-    }, c.label)));
+    box.replaceChildren(...state.categories.map((c) => {
+      const { icon, name } = splitLabel(c.label);
+      const n = state.photos.filter((p) => p.category === c.key).length;
+      return el('button', {
+        type: 'button', class: 'pick-opt', role: 'radio', 'aria-checked': String(c.key === state.uploadCategory),
+        onclick: () => { state.uploadCategory = c.key; renderPicker(); },
+      },
+      el('span', { class: 'pick-icon' }, icon),
+      el('span', {}, el('span', { class: 'pick-name' }, name), el('br'),
+        el('span', { class: 'pick-desc' }, `${n} photo${n === 1 ? '' : 's'} now`)));
+    }));
   }
 
   $('fileInput').addEventListener('change', (e) => {
@@ -217,9 +234,9 @@
     $('tabs').replaceChildren(...state.categories.map((c) => {
       const n = state.photos.filter((p) => p.category === c.key).length;
       return el('button', {
-        type: 'button', role: 'tab', 'aria-selected': String(c.key === state.tab),
+        type: 'button', class: 'gf-btn', role: 'tab', 'aria-selected': String(c.key === state.tab),
         onclick: () => { state.tab = c.key; renderTabs(); renderList(); },
-      }, c.label + ' ', el('span', { class: 'count' }, `(${n})`));
+      }, c.label, el('span', { class: 'count' }, `(${n})`));
     }));
   }
 
@@ -227,7 +244,7 @@
     const list = state.photos.filter((p) => p.category === state.tab);
     const box = $('photoList');
     if (!list.length) {
-      box.replaceChildren(el('p', { class: 'muted empty' },
+      box.replaceChildren(el('p', { class: 'empty' },
         'No photos in this section yet. While it\'s empty it won\'t show on the website.'));
       return;
     }
@@ -245,15 +262,21 @@
       state.categories.map((c) => el('option', { value: c.key, selected: c.key === p.category }, c.label)));
     category.addEventListener('change', () => save(p, { category: category.value }, 'Moved to ' + labelFor(category.value)));
 
-    return el('div', { class: 'photo-row' },
-      el('img', { src: p.url, alt: p.alt || '', loading: 'lazy' }),
-      el('div', { class: 'controls' },
+    const icon = (name) => el('i', { class: 'fa-solid ' + name });
+
+    /* The top is the same card the website shows, caption overlay and all,
+       so what he sees here is what visitors see. */
+    return el('div', { class: 'm-item' },
+      el('div', { class: 'g-item' },
+        el('img', { src: p.url, alt: p.alt || '', loading: 'lazy' }),
+        p.caption ? el('div', { class: 'g-overlay' }, el('span', {}, p.caption)) : ''),
+      el('div', { class: 'm-controls' },
         caption,
         category,
-        el('div', { class: 'actions' },
-          el('button', { class: 'icon-btn', type: 'button', disabled: i === 0, onclick: () => move(p, 'up'), 'aria-label': 'Move earlier' }, '↑ Earlier'),
-          el('button', { class: 'icon-btn', type: 'button', disabled: i === total - 1, onclick: () => move(p, 'down'), 'aria-label': 'Move later' }, '↓ Later'),
-          el('button', { class: 'icon-btn danger', type: 'button', onclick: () => remove(p) }, 'Delete'))));
+        el('div', { class: 'm-actions' },
+          el('button', { class: 'icon-btn', type: 'button', disabled: i === 0, onclick: () => move(p, 'up'), 'aria-label': 'Move earlier', title: 'Move earlier' }, icon('fa-arrow-left')),
+          el('button', { class: 'icon-btn', type: 'button', disabled: i === total - 1, onclick: () => move(p, 'down'), 'aria-label': 'Move later', title: 'Move later' }, icon('fa-arrow-right')),
+          el('button', { class: 'icon-btn danger', type: 'button', onclick: () => remove(p) }, icon('fa-trash-can'), 'Delete'))));
   }
 
   async function save(p, changes, msg) {

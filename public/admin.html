@@ -5,74 +5,112 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
   <title>Owner Portal – Q &amp; M Lawncare</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <link href="/admin.css" rel="stylesheet" />
 </head>
 <body>
 
+<!-- NAVBAR (same as the website's) -->
+<nav class="navbar">
+  <div class="container nav-inner">
+    <a href="/" class="nav-brand">
+      <img class="nav-logo" src="/IMG_1494.jpeg" alt="Q&amp;M Lawncare Logo" />
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Q &amp; M Lawncare</span>
+        <span class="nav-brand-tag">Owner Portal</span>
+      </div>
+    </a>
+    <div id="navActions" class="nav-actions" hidden>
+      <a href="/#gallery" target="_blank" rel="noopener" class="btn btn-sm btn-outline-white">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i><span class="hide-sm"> View Site</span>
+      </a>
+      <button id="logoutBtn" class="btn btn-sm btn-outline-white" type="button">
+        <i class="fa-solid fa-right-from-bracket"></i><span class="hide-sm"> Sign Out</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
 <!-- SIGN IN -->
 <main id="loginView" class="login-wrap" hidden>
-  <form id="loginForm" class="card login-card" novalidate>
-    <img class="login-logo" src="/IMG_1494.jpeg" alt="Q&amp;M Lawncare" />
-    <h1>Owner Portal</h1>
-    <p class="muted">Sign in to manage the photos on your website.</p>
-    <label>Email
-      <input type="email" name="email" autocomplete="username" required />
-    </label>
-    <label>Password
-      <input type="password" name="password" autocomplete="current-password" required />
-    </label>
-    <p id="loginError" class="error" hidden></p>
-    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-    <a href="/" class="back-link">← Back to website</a>
-  </form>
+  <div class="panel login-panel">
+    <div class="panel-head">
+      <h3><i class="fa-solid fa-lock"></i> Owner Sign In</h3>
+      <p>Sign in to manage the photos on your website.</p>
+    </div>
+    <form id="loginForm" class="panel-body" novalidate>
+      <div class="fg">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="username" required />
+      </div>
+      <div class="fg">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required />
+      </div>
+      <p id="loginError" class="error" hidden></p>
+      <button type="submit" class="btn btn-green btn-block"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+      <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to website</a>
+    </form>
+  </div>
 </main>
 
 <!-- PORTAL -->
 <div id="portalView" hidden>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <img src="/IMG_1494.jpeg" alt="" class="topbar-logo" />
-      <div class="topbar-title">
-        <strong>Q &amp; M Lawncare</strong>
-        <span id="hello" class="muted"></span>
-      </div>
-      <a href="/#gallery" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">View Site</a>
-      <button id="logoutBtn" class="btn btn-ghost btn-sm" type="button">Sign Out</button>
+  <header class="page-hd">
+    <div class="container">
+      <span class="section-label">Owner Portal</span>
+      <h1 class="section-title">Your Gallery</h1>
+      <p class="section-sub" id="hello"></p>
     </div>
   </header>
 
-  <main class="container">
+  <main class="container portal">
     <!-- UPLOAD -->
-    <section class="card">
-      <h2>Add Photos</h2>
-      <p class="muted">New photos go first in their section of the gallery.</p>
+    <section class="panel">
+      <div class="panel-head">
+        <h3><i class="fa-solid fa-camera"></i> Add Photos</h3>
+        <p>New photos show first in their section of the gallery.</p>
+      </div>
+      <div class="panel-body">
+        <div class="fg">
+          <label>1. Which section?</label>
+          <div id="catPicker" class="svc-picker" role="radiogroup" aria-label="Gallery section"></div>
+        </div>
 
-      <div class="field-label">1. Which section?</div>
-      <div id="catPicker" class="seg" role="radiogroup" aria-label="Gallery section"></div>
+        <div class="fg">
+          <label for="fileInput">2. Choose photos</label>
+          <label class="drop" for="fileInput">
+            <input type="file" id="fileInput" accept="image/*" multiple />
+            <span class="pick-icon"><i class="fa-solid fa-images"></i></span>
+            <span>
+              <span class="pick-name">Tap to choose photos</span><br />
+              <span class="pick-desc">or take a new one with your camera</span>
+            </span>
+          </label>
+          <div id="pending" class="pending"></div>
+        </div>
 
-      <div class="field-label">2. Choose photos</div>
-      <label class="drop" id="drop">
-        <input type="file" id="fileInput" accept="image/*" multiple />
-        <span class="drop-icon">📷</span>
-        <span class="drop-text"><strong>Tap to choose photos</strong><br /><span class="muted">or take a new one</span></span>
-      </label>
+        <div class="fg">
+          <label for="captionInput">3. Caption <span class="optional">(optional — shows when someone hovers over the photo)</span></label>
+          <input type="text" id="captionInput" maxlength="80" placeholder="e.g. Spring Cleanup in Boone" />
+        </div>
 
-      <div id="pending" class="pending"></div>
-
-      <label class="field-label" for="captionInput">3. Caption <span class="muted">(optional — shows when someone hovers over the photo)</span></label>
-      <input type="text" id="captionInput" maxlength="80" placeholder="e.g. Spring Cleanup in Boone" />
-
-      <p id="uploadError" class="error" hidden></p>
-      <button id="uploadBtn" class="btn btn-primary btn-block" type="button" disabled>Upload</button>
+        <p id="uploadError" class="error" hidden></p>
+        <div class="submit-row">
+          <button id="uploadBtn" class="btn btn-green" type="button" disabled><i class="fa-solid fa-cloud-arrow-up"></i> Upload</button>
+        </div>
+      </div>
     </section>
 
-    <!-- MANAGE -->
-    <section class="card">
-      <h2>Your Gallery</h2>
-      <p class="muted">Change a caption, move a photo to another section, reorder, or remove it. Changes show on the website right away.</p>
-      <div id="tabs" class="seg seg-tabs" role="tablist"></div>
-      <div id="photoList" class="photo-list"></div>
+    <!-- MANAGE: dark like the website's gallery section -->
+    <section class="manage">
+      <div class="manage-hd">
+        <h3>Manage Photos</h3>
+        <p>Change a caption, move a photo to another section, reorder, or remove it. Changes show on the website right away.</p>
+      </div>
+      <div id="tabs" class="gallery-filters" role="tablist"></div>
+      <div id="photoList" class="gallery-grid"></div>
     </section>
   </main>
 </div>
