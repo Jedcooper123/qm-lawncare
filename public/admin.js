@@ -71,7 +71,12 @@
     $('navActions').hidden = false;
     const first = (owner.name || '').split(' ')[0];
     $('hello').textContent = (first ? `Hi ${first} — ` : '') + 'add photos of your work and manage what shows on your website.';
-    await refresh();
+    /* Each section loads on its own, so one failed request shows a retry
+       message in that section rather than sending him back to sign in. */
+    refresh()
+      .catch((err) => showLoadError('photoList', err, refresh))
+      .then(() => loadSiteImages())
+      .catch((err) => showLoadError('siteImages', err, loadSiteImages));
   }
 
   /* ── Sign in / out ───────────────────────────────────────── */
@@ -110,6 +115,78 @@
     renderPicker();
     renderTabs();
     renderList();
+  }
+
+  function showLoadError(boxId, err, retry) {
+    if ($('portalView').hidden) return; // signed out; the login form is showing
+    $(boxId).replaceChildren(el('p', { class: 'empty load-error' },
+      err.message + ' ',
+      el('button', { class: 'btn btn-sm btn-green', type: 'button', onclick: () => {
+        retry().catch((e) => showLoadError(boxId, e, retry));
+      } }, el('i', { class: 'fa-solid fa-rotate-right' }), 'Try again')));
+  }
+
+  /* ── Website photos (banner, About photos, logo) ─────────── */
+  async function loadSiteImages() {
+    const data = await api('/site-images');
+    renderSiteImages(data.images);
+  }
+
+  function renderSiteImages(images) {
+    /* Keep the portal's own logo in step with a replaced one. */
+    const logo = images.find((s) => s.key === 'logo');
+    if (logo) document.querySelector('.nav-logo').src = logo.url;
+
+    $('siteImages').replaceChildren(...images.map((s) => {
+      const card = el('div', { class: 'site-card' });
+      const input = el('input', { type: 'file', accept: 'image/*', id: 'site-' + s.key });
+
+      input.addEventListener('change', async () => {
+        const file = input.files[0];
+        input.value = '';
+        if (!file) return;
+        card.classList.add('busy');
+        try {
+          const body = new FormData();
+          body.append('photo', await shrink(file), 'photo.jpg');
+          const data = await api('/site-images/' + s.key, { method: 'POST', body });
+          renderSiteImages(data.images);
+          toast(s.label + ' updated');
+        } catch (err) {
+          card.classList.remove('busy');
+          toast(err.message);
+        }
+      });
+
+      const restore = async () => {
+        if (!confirm(`Put the original ${s.label.toLowerCase()} back?`)) return;
+        card.classList.add('busy');
+        try {
+          const data = await api('/site-images/' + s.key, { method: 'DELETE' });
+          renderSiteImages(data.images);
+          toast('Original ' + s.label.toLowerCase() + ' restored');
+        } catch (err) {
+          card.classList.remove('busy');
+          toast(err.message);
+        }
+      };
+
+      card.append(
+        el('div', { class: 'site-preview ' + s.key },
+          el('img', { src: s.url, alt: s.label, loading: 'lazy' }),
+          el('span', { class: 'site-badge' + (s.custom ? '' : ' orig') }, s.custom ? 'Your photo' : 'Original')),
+        el('div', { class: 'site-info' },
+          el('span', { class: 'pick-name' }, s.label),
+          el('span', { class: 'pick-desc' }, s.desc),
+          el('div', { class: 'site-actions' },
+            el('label', { class: 'btn btn-green', for: 'site-' + s.key },
+              el('i', { class: 'fa-solid fa-arrow-up-from-bracket' }), 'Replace', input),
+            s.custom
+              ? el('button', { class: 'btn btn-outline-dark', type: 'button', onclick: restore },
+                  el('i', { class: 'fa-solid fa-rotate-left' }), 'Restore original')
+              : '')));
+      return card;
+    }));
   }
 
   /* ── Upload ──────────────────────────────────────────────── */

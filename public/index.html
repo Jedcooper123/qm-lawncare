@@ -176,6 +176,36 @@
       .nav-brand-name { font-size: 1rem; }
       .nav-logo { height: 42px; width: 42px; }
     }
+    /* Owner sign-in. Outline buttons carry a 2px border, so 2px less padding
+       keeps it the same height as Free Estimate beside it. */
+    .nav-signin { padding: 8.5px 20px; font-size: 0.88rem; }
+    /* Small laptops: not enough room for everything at full size, so the
+       phone number collapses to its icon (as it already does on tablets)
+       and Sign In to an icon button. */
+    @media (min-width: 961px) and (max-width: 1240px) {
+      .nav-phone-link span { display: none; }
+      .nav-signin .ns-text { display: none; }
+      .nav-right .btn.nav-signin { padding: 0; width: 39px; height: 39px; }
+    }
+    @media (min-width: 961px) and (max-width: 1060px) {
+      .nav-links { gap: 20px; }
+    }
+    /* Tablets and phones: the phone icon and Sign In sit together on the
+       right beside the menu button, rather than floating mid-bar. */
+    @media (max-width: 960px) {
+      .nav-right { margin-left: auto; }
+      .nav-right .btn.nav-signin { display: inline-flex; padding: 6px 14px; font-size: 0.8rem; gap: 6px; }
+    }
+    @media (max-width: 480px) {
+      .nav-right { gap: 12px; }
+      .nav-signin .ns-text { display: none; }
+      .nav-right .btn.nav-signin { padding: 0; width: 34px; height: 34px; }
+    }
+    /* Smallest phones: no room for both icons. Calling stays one tap away
+       on the Call Now bar pinned to the bottom of the screen. */
+    @media (max-width: 380px) {
+      .nav-phone-link { display: none; }
+    }
     .mobile-menu {
       display: none; flex-direction: column;
       background: var(--dark2);
@@ -207,7 +237,7 @@
     }
     .hero-bg {
       position: absolute; inset: 0;
-      background-image: url('IMG_2596.jpeg');
+      background-image: url('__SITE_IMAGE_hero__');
       background-size: cover;
       background-position: center 40%;
       filter: brightness(0.38);
@@ -726,7 +756,7 @@
   <div class="container">
     <div class="nav-inner">
       <a href="#hero" class="nav-brand">
-        <img class="nav-logo" src="IMG_1494.jpeg" alt="Q&M Lawncare Logo" />
+        <img class="nav-logo" src="__SITE_IMAGE_logo__" alt="Q&M Lawncare Logo" />
         <div class="nav-brand-text">
           <span class="nav-brand-name">Q &amp; M Lawncare</span>
           <span class="nav-brand-tag">Your Yard, Our Passion</span>
@@ -747,6 +777,9 @@
         </a>
         <a href="#schedule" class="btn btn-bright" style="padding:10px 22px;font-size:0.88rem;">
           <i class="fa-solid fa-calendar-check"></i> Free Estimate
+        </a>
+        <a href="/admin" class="btn btn-outline-white nav-signin" aria-label="Owner sign in" title="Owner Sign In">
+          <i class="fa-solid fa-right-to-bracket"></i><span class="ns-text"> Sign In</span>
         </a>
       </div>
       <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -971,8 +1004,8 @@
   <div class="container">
     <div class="about-grid">
       <div class="about-photos reveal">
-        <img class="ap-main" src="IMG_1715.jpeg" alt="Perfectly striped lawn" />
-        <img class="ap-accent" src="510502370_122156325092475587_8955067726823217445_n.jpg" alt="Mulch landscaping" />
+        <img class="ap-main" src="__SITE_IMAGE_about-main__" alt="Perfectly striped lawn" />
+        <img class="ap-accent" src="__SITE_IMAGE_about-accent__" alt="Mulch landscaping" />
         <div class="ap-badge">
           <span class="icon"><i class="fa-solid fa-trophy" style="color:var(--green-bright)"></i></span>
           <span>Nextdoor<br/>Neighborhood<br/>FAVE<br/>2025</span>
@@ -1321,7 +1354,7 @@
     <div class="footer-top">
       <div class="fbrand">
         <div class="fbrand-logo">
-          <img src="IMG_1494.jpeg" alt="Q&M Lawncare Logo" />
+          <img src="__SITE_IMAGE_logo__" alt="Q&M Lawncare Logo" />
           <span>Q &amp; M Lawncare</span>
         </div>
         <p>Your Yard, Our Passion. Serving western North Carolina with professional lawn care and landscaping. Licensed &amp; insured. Free estimates always.</p>

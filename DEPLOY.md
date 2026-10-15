@@ -67,6 +67,10 @@ Deploy, then check the logs for `[db] imported 18 photos` and `[db] ready`.
   list and image bytes in memory, photo URLs are cached by browsers for a
   year, and `/healthz` never touches the database (the Classic Cleanz
   outage in Sept 2026 was a health check keeping Neon awake).
+- **Website Photos** (banner, About photos, logo) can be replaced from
+  /admin. They're stored in the `site_images` table; deleting a row puts
+  the original from `public/` back. In the HTML they're
+  `__SITE_IMAGE_<key>__` placeholders, filled in by the server.
 - **If Neon is down**, the site still serves, using the 18 launch photos
   from `seed/photos/`, and keeps retrying every 2 minutes.
 - The schedule and contact forms still go through formsubmit.co to

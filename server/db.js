@@ -75,6 +75,19 @@ CREATE TABLE IF NOT EXISTS photos (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS photos_order_idx ON photos (category, sort_order, id);
+
+-- The fixed photos outside the gallery (banner, About photos, logo). A row
+-- exists only while the owner has replaced that spot; deleting it puts the
+-- original from public/ back.
+CREATE TABLE IF NOT EXISTS site_images (
+  slot       TEXT PRIMARY KEY,
+  mime       TEXT NOT NULL,
+  width      INTEGER NOT NULL,
+  height     INTEGER NOT NULL,
+  bytes      INTEGER NOT NULL,
+  data       BYTEA NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 `;
 
 export async function migrate() {

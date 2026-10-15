@@ -17,11 +17,14 @@ const QUALITY = 76;
    phone photo doesn't come out sideways. The output carries no metadata at
    all — phone photos embed GPS coordinates, which for a lawn company means
    a customer's home address. */
-export async function processPhoto(input) {
+export async function processPhoto(input, { maxEdge = MAX_EDGE, quality = QUALITY } = {}) {
   const { data, info } = await sharp(input, { failOn: 'error' })
     .rotate()
-    .resize({ width: MAX_EDGE, height: MAX_EDGE, fit: 'inside', withoutEnlargement: true })
-    .jpeg({ quality: QUALITY, mozjpeg: true })
+    .resize({ width: maxEdge, height: maxEdge, fit: 'inside', withoutEnlargement: true })
+    /* JPEG has no transparency; a PNG logo would otherwise come out on
+       black. White matches the circle the logo sits in. */
+    .flatten({ background: '#ffffff' })
+    .jpeg({ quality, mozjpeg: true })
     .toBuffer({ resolveWithObject: true });
   return { data, width: info.width, height: info.height, mime: 'image/jpeg' };
 }

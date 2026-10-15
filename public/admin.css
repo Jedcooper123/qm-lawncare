@@ -208,3 +208,32 @@ a { text-decoration: none; color: inherit; }
   opacity: 0; pointer-events: none; transition: all 0.25s ease; max-width: calc(100% - 32px); text-align: center;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ——— Website photos (banner, About photos, logo) ——— */
+.site-panel { margin-top: 32px; }
+.site-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (max-width: 700px) { .site-grid { grid-template-columns: 1fr; } }
+.site-card { border: 2px solid var(--gray); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.site-preview { position: relative; aspect-ratio: 4/3; background: var(--dark); overflow: hidden; }
+.site-preview img { width: 100%; height: 100%; object-fit: cover; }
+/* The banner is shown darkened on the site; preview it the same way. */
+.site-preview.hero img { filter: brightness(0.6); }
+.site-preview.logo { display: flex; align-items: center; justify-content: center; }
+.site-preview.logo img { width: 58%; height: auto; aspect-ratio: 1; object-fit: contain; border-radius: 50%; background: #fff; padding: 6px; }
+.site-badge {
+  position: absolute; top: 10px; left: 10px;
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 11px; border-radius: 50px; background: var(--green-pale); color: var(--green);
+}
+.site-badge.orig { background: rgba(255,255,255,0.85); color: var(--text-mid); }
+.site-info { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.site-info .pick-name { font-size: 0.95rem; font-weight: 800; }
+.site-info .pick-desc { font-size: 0.8rem; line-height: 1.5; flex: 1; }
+.site-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.site-actions .btn { padding: 9px 18px; font-size: 0.85rem; gap: 7px; }
+.site-actions input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.btn-outline-dark { background: transparent; color: var(--text-mid); border: 2px solid var(--gray); }
+.btn-outline-dark:hover { border-color: var(--green); color: var(--green); }
+.site-card.busy { opacity: 0.6; pointer-events: none; }
+.load-error { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.site-grid .load-error { color: var(--text-mid); }

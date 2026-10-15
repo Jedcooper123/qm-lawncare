@@ -5,6 +5,7 @@ import { query, tx } from '../db.js';
 import { issueSession, clearSession, requireOwner, verifyCredentials } from '../lib/auth.js';
 import { processPhoto } from '../lib/images.js';
 import { CATEGORIES, CATEGORY_KEYS, loadGallery, listPhotos, forgetPhotoBytes } from '../lib/gallery.js';
+import { SITE_IMAGE_KEYS, loadSiteImages, listSiteImages } from '../lib/site-images.js';
 
 export const ownerRouter = express.Router();
 
@@ -74,37 +75,95 @@ ownerRouter.get('/photos', async (_req, res, next) => {
   } catch (err) { next(err); }
 });
 
-ownerRouter.post('/photos', (req, res, next) => {
-  upload.single('photo')(req, res, async (uploadErr) => {
-    try {
-      if (uploadErr?.code === 'LIMIT_FILE_SIZE') throw badRequest(`That photo is over ${MAX_UPLOAD_MB} MB. Try a smaller one.`);
-      if (uploadErr) throw badRequest('That upload did not go through. Please try again.');
-      if (!req.file) throw badRequest('Please choose a photo (JPG, PNG or WebP).');
-
-      const category = String(req.body?.category || '');
-      if (!CATEGORY_KEYS.has(category)) throw badRequest('Please pick a category.');
-      const caption = clean(req.body?.caption, 80);
-
-      let img;
+/* Runs the upload, then hands the handler the request with the photo
+   already resized. Shared by gallery photos and the fixed site photos. */
+function withPhoto(sizing, handler) {
+  return (req, res, next) => {
+    upload.single('photo')(req, res, async (uploadErr) => {
       try {
-        img = await processPhoto(req.file.buffer);
-      } catch (_) {
-        throw badRequest("That file couldn't be read as a photo. If it's from an iPhone, try sharing it as a JPG.");
-      }
+        if (uploadErr?.code === 'LIMIT_FILE_SIZE') throw badRequest(`That photo is over ${MAX_UPLOAD_MB} MB. Try a smaller one.`);
+        if (uploadErr) throw badRequest('That upload did not go through. Please try again.');
+        if (!req.file) throw badRequest('Please choose a photo (JPG, PNG or WebP).');
 
-      /* New work goes to the front of its category. */
-      const { rows } = await query(
-        `INSERT INTO photos (category, caption, alt, sort_order, mime, width, height, bytes, data)
-         VALUES ($1, $2, $3,
-                 (SELECT COALESCE(MIN(sort_order), 0) - 1 FROM photos WHERE category = $1),
-                 $4, $5, $6, $7, $8)
-         RETURNING id, category, caption, alt, width, height, bytes, created_at`,
-        [category, caption, caption, img.mime, img.width, img.height, img.data.length, img.data]
-      );
-      await loadGallery();
-      res.status(201).json({ photo: photoJson(rows[0]) });
-    } catch (err) { next(err); }
-  });
+        /* Check the request is valid before the slow resize. */
+        const opts = typeof sizing === 'function' ? sizing(req) : sizing;
+
+        let img;
+        try {
+          img = await processPhoto(req.file.buffer, opts);
+        } catch (_) {
+          throw badRequest("That file couldn't be read as a photo. If it's from an iPhone, try sharing it as a JPG.");
+        }
+        await handler(req, res, img);
+      } catch (err) { next(err); }
+    });
+  };
+}
+
+ownerRouter.post('/photos', withPhoto(
+  (req) => {
+    if (!CATEGORY_KEYS.has(String(req.body?.category || ''))) throw badRequest('Please pick a category.');
+    return {};
+  },
+  async (req, res, img) => {
+    const category = String(req.body.category);
+    const caption = clean(req.body?.caption, 80);
+
+    /* New work goes to the front of its category. */
+    const { rows } = await query(
+      `INSERT INTO photos (category, caption, alt, sort_order, mime, width, height, bytes, data)
+       VALUES ($1, $2, $3,
+               (SELECT COALESCE(MIN(sort_order), 0) - 1 FROM photos WHERE category = $1),
+               $4, $5, $6, $7, $8)
+       RETURNING id, category, caption, alt, width, height, bytes, created_at`,
+      [category, caption, caption, img.mime, img.width, img.height, img.data.length, img.data]
+    );
+    await loadGallery();
+    res.status(201).json({ photo: photoJson(rows[0]) });
+  }
+));
+
+/* ── Website photos (banner, About photos, logo) ───────────── */
+const siteSlot = (req) => {
+  const slot = SITE_IMAGE_KEYS.get(req.params.slot);
+  if (!slot) throw Object.assign(new Error('Unknown photo spot.'), { status: 404 });
+  return slot;
+};
+
+ownerRouter.get('/site-images', async (_req, res, next) => {
+  try {
+    await loadSiteImages();
+    res.json({ images: listSiteImages() });
+  } catch (err) { next(err); }
+});
+
+ownerRouter.post('/site-images/:slot', withPhoto(
+  (req) => {
+    const { maxEdge, quality } = siteSlot(req);
+    return { maxEdge, quality };
+  },
+  async (req, res, img) => {
+    await query(
+      `INSERT INTO site_images (slot, mime, width, height, bytes, data, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, NOW())
+       ON CONFLICT (slot) DO UPDATE SET
+         mime = EXCLUDED.mime, width = EXCLUDED.width, height = EXCLUDED.height,
+         bytes = EXCLUDED.bytes, data = EXCLUDED.data, updated_at = NOW()`,
+      [req.params.slot, img.mime, img.width, img.height, img.data.length, img.data]
+    );
+    await loadSiteImages();
+    res.json({ images: listSiteImages() });
+  }
+));
+
+/* Puts the original photo back. */
+ownerRouter.delete('/site-images/:slot', async (req, res, next) => {
+  try {
+    siteSlot(req);
+    await query('DELETE FROM site_images WHERE slot = $1', [req.params.slot]);
+    await loadSiteImages();
+    res.json({ images: listSiteImages() });
+  } catch (err) { next(err); }
 });
 
 ownerRouter.patch('/photos/:id', async (req, res, next) => {

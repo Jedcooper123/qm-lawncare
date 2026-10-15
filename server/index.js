@@ -11,11 +11,13 @@ import { migrate, seedOwner, seedPhotos, pool } from './db.js';
 import { ownerRouter } from './routes/owner.js';
 import { processPhoto } from './lib/images.js';
 import { loadGallery, galleryLoaded, getPhotoBytes, renderGallery } from './lib/gallery.js';
+import { loadSiteImages, getSiteImageBytes, renderSiteImages } from './lib/site-images.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 const SEED_PHOTOS_DIR = path.join(__dirname, '..', 'seed', 'photos');
 const INDEX_TEMPLATE = fs.readFileSync(path.join(PUBLIC_DIR, 'index.html'), 'utf8');
+const ADMIN_TEMPLATE = fs.readFileSync(path.join(PUBLIC_DIR, 'admin.html'), 'utf8');
 
 const app = express();
 
@@ -86,13 +88,22 @@ app.get('/photos/:id(\\d{1,9}).jpg', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+/* A replaced banner, About photo or logo. The version in the URL changes
+   with every replacement, so the same caching applies. */
+app.get('/site-images/:slot([a-z-]+)-:version(\\d+).jpg', (req, res) => {
+  const buf = getSiteImageBytes(req.params.slot, req.params.version);
+  if (!buf) return res.status(404).end();
+  res.set('Cache-Control', 'public, max-age=31536000, immutable');
+  res.type('image/jpeg').send(buf);
+});
+
 /* ── Pages ─────────────────────────────────────────────────── */
 app.get(['/', '/index.html'], (_req, res) => {
-  res.set('Cache-Control', 'no-cache').type('html').send(renderGallery(INDEX_TEMPLATE));
+  res.set('Cache-Control', 'no-cache').type('html').send(renderSiteImages(renderGallery(INDEX_TEMPLATE)));
 });
 
 app.get(['/admin', '/admin/'], (_req, res) => {
-  res.set('Cache-Control', 'no-cache').set('X-Robots-Tag', 'noindex').sendFile(path.join(PUBLIC_DIR, 'admin.html'));
+  res.set('Cache-Control', 'no-cache').set('X-Robots-Tag', 'noindex').type('html').send(renderSiteImages(ADMIN_TEMPLATE));
 });
 
 app.use(express.static(PUBLIC_DIR, {
@@ -129,6 +140,7 @@ async function prepareDatabase() {
     await seedOwner();
     await seedPhotos(processPhoto);
     await loadGallery();
+    await loadSiteImages();
     dbReady = true;
     console.log('[db] ready');
   } catch (err) {
