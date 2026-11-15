@@ -33,6 +33,16 @@ export const env = {
     phone: '(828) 263-7659',
   },
 
+  /* Where the booking and contact forms are delivered (through
+     formsubmit.co). While REDIRECT_ALL_EMAIL_TO is set — for testing —
+     every submission goes there instead and is marked [TEST]. */
+  formEmail: (
+    process.env.REDIRECT_ALL_EMAIL_TO ||
+    process.env.FORM_EMAIL ||
+    'quinlanmarsh05@gmail.com'
+  ).trim(),
+  formTestMode: Boolean((process.env.REDIRECT_ALL_EMAIL_TO || '').trim()),
+
   trustProxy: bool(process.env.TRUST_PROXY, true),
 };
 

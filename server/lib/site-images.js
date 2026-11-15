@@ -24,11 +24,16 @@ export const SITE_IMAGES = [
     desc: 'Shown in a white circle in the menu bar and footer. A square image works best.',
     original: '/IMG_1494.jpeg', maxEdge: 600, quality: 85,
   },
+  {
+    key: 'snow-flyer', label: 'Snow Services Flyer',
+    desc: 'The flyer shown in the “Snow Services” section. A tall (portrait) image works best.',
+    original: '/snow-services-flyer.jpg', maxEdge: 1400, quality: 82,
+  },
 ];
 export const SITE_IMAGE_KEYS = new Map(SITE_IMAGES.map((s) => [s.key, s]));
 
 /* Same approach as the gallery: read once, kept in memory, so page views
-   never wake the database. There are only four, so all bytes are kept. */
+   never wake the database. There are only a handful, so all bytes are kept. */
 let custom = new Map(); // key -> { version, data }
 
 export async function loadSiteImages() {

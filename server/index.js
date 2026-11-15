@@ -49,6 +49,11 @@ app.use(helmet({
   },
   crossOriginEmbedderPolicy: false,
   hsts: isProd ? { maxAge: 31_536_000, includeSubDomains: true } : false,
+  /* formsubmit.co identifies which site a form came from by its Referer /
+     Origin and rejects submissions without one. Helmet's default
+     (no-referrer) stripped it, which silently broke the booking form.
+     This is the browser default: only the origin is sent cross-site. */
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 }));
 
 app.use(express.json({ limit: '64kb' }));
@@ -98,8 +103,15 @@ app.get('/site-images/:slot([a-z-]+)-:version(\\d+).jpg', (req, res) => {
 });
 
 /* ── Pages ─────────────────────────────────────────────────── */
+
+/* Booking/contact form delivery address, and a [TEST] subject tag while
+   REDIRECT_ALL_EMAIL_TO is set. Fixed for the life of the process. */
+const renderForms = (html) => html
+  .replaceAll('__FORM_EMAIL__', encodeURIComponent(env.formEmail))
+  .replaceAll('__FORM_SUBJECT_PREFIX__', env.formTestMode ? '[TEST] ' : '');
+
 app.get(['/', '/index.html'], (_req, res) => {
-  res.set('Cache-Control', 'no-cache').type('html').send(renderSiteImages(renderGallery(INDEX_TEMPLATE)));
+  res.set('Cache-Control', 'no-cache').type('html').send(renderForms(renderSiteImages(renderGallery(INDEX_TEMPLATE))));
 });
 
 app.get(['/admin', '/admin/'], (_req, res) => {
@@ -163,6 +175,7 @@ async function start() {
     console.log(`\n  ${env.business.name}`);
     console.log(`  ${env.siteUrl}  (listening on :${env.port}, ${env.nodeEnv})`);
     console.log(`  Owner portal:   ${env.siteUrl}/admin`);
+    console.log(`  Form emails:    ${env.formEmail}${env.formTestMode ? '  (TEST MODE — REDIRECT_ALL_EMAIL_TO)' : ''}`);
     console.log(`  Gallery:        ${galleryLoaded() ? 'from database' : 'launch photos (database unavailable)'}\n`);
   });
 

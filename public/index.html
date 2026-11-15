@@ -739,6 +739,82 @@
     .fd-call { background: var(--green); }
     .fd-book { background: var(--dark2); border: 1px solid rgba(255,255,255,0.15); }
     @media (max-width: 640px) { body { padding-bottom: 70px; } }
+
+    /* ——— SNOW SERVICES ——— */
+    #snow {
+      position: relative; overflow: hidden;
+      padding: 96px 0;
+      background:
+        radial-gradient(ellipse at 15% 0%, rgba(147,197,253,0.16), transparent 55%),
+        radial-gradient(ellipse at 90% 100%, rgba(34,197,94,0.14), transparent 55%),
+        linear-gradient(160deg, #0b1622 0%, #0f1e0f 100%);
+    }
+    .snow-flakes {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0.35;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 90px 120px, #fff, transparent),
+        radial-gradient(2.5px 2.5px at 160px 60px, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 230px 170px, #fff, transparent),
+        radial-gradient(2px 2px at 300px 90px, #fff, transparent);
+      background-size: 320px 220px;
+    }
+    .snow-grid {
+      position: relative;
+      display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 64px; align-items: center;
+    }
+    .snow-flyer { position: relative; max-width: 460px; justify-self: center; width: 100%; }
+    .snow-flyer a { display: block; }
+    .snow-flyer img {
+      width: 100%; height: auto; border-radius: 18px;
+      border: 4px solid rgba(255,255,255,0.9);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(147,197,253,0.25);
+      transform: rotate(-1.5deg);
+      transition: transform var(--transition);
+    }
+    .snow-flyer a:hover img { transform: rotate(0deg) scale(1.02); }
+    .snow-flyer-hint {
+      display: block; text-align: center; margin-top: 16px;
+      color: rgba(255,255,255,0.55); font-size: 0.8rem; font-weight: 700;
+    }
+    .snow-label { background: rgba(147,197,253,0.14); color: #bfdbfe; }
+    .snow-copy .section-sub { margin-bottom: 28px; }
+    .snow-svcs { display: grid; gap: 14px; margin-bottom: 24px; }
+    .snow-svc {
+      display: flex; align-items: center; gap: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius); padding: 16px 18px;
+    }
+    .snow-svc-icon {
+      width: 50px; height: 50px; border-radius: 12px; flex-shrink: 0;
+      background: rgba(34,197,94,0.15); color: var(--green-bright);
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    }
+    .snow-svc h3 { color: var(--white); font-weight: 800; font-size: 1.05rem; }
+    .snow-svc p { color: rgba(255,255,255,0.6); font-size: 0.88rem; margin-top: 2px; }
+    .snow-checks { display: grid; gap: 10px; margin-bottom: 32px; }
+    .snow-checks li { color: var(--text-light); font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .snow-checks i { color: var(--green-bright); }
+    .snow-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    @media (max-width: 900px) {
+      #snow { padding: 72px 0; }
+      .snow-grid { grid-template-columns: 1fr; gap: 44px; }
+      .snow-copy { order: -1; }
+      .snow-flyer { max-width: 400px; }
+    }
+    @media (max-width: 640px) {
+      .snow-btns .btn { width: 100%; justify-content: center; }
+    }
+
+    /* ——— FORM ERRORS ——— */
+    .form-error {
+      display: none; margin: 4px 0 14px; padding: 12px 16px;
+      border-radius: 10px; font-weight: 700; font-size: 0.9rem; line-height: 1.5;
+      background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;
+    }
+    .form-error a { color: inherit; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -748,7 +824,7 @@
   🍃&nbsp;
   Free Estimates — Call <a href="tel:8282637659">(828) 263-7659</a> or
   <a href="#schedule">Book Online</a> &nbsp;|&nbsp;
-  🏆 2025 Nextdoor Neighborhood Fave
+  ❄️ <a href="#snow">New: Snow Plowing &amp; Ice Treatment</a>
 </div>
 
 <!-- NAVBAR -->
@@ -789,6 +865,7 @@
     <div class="mobile-menu" id="mobileMenu">
       <a href="#hero" onclick="closeMenu()"><i class="fa-solid fa-house"></i> Home</a>
       <a href="#services" onclick="closeMenu()"><i class="fa-solid fa-leaf"></i> Services</a>
+      <a href="#snow" onclick="closeMenu()"><i class="fa-regular fa-snowflake"></i> Snow Services</a>
       <a href="#about" onclick="closeMenu()"><i class="fa-solid fa-circle-info"></i> About Us</a>
       <a href="#gallery" onclick="closeMenu()"><i class="fa-solid fa-images"></i> Gallery</a>
       <a href="#schedule" onclick="closeMenu()"><i class="fa-solid fa-calendar"></i> Schedule</a>
@@ -999,6 +1076,58 @@
   </div>
 </section>
 
+<!-- SNOW SERVICES -->
+<section id="snow">
+  <div class="snow-flakes" aria-hidden="true"></div>
+  <div class="container">
+    <div class="snow-grid">
+      <div class="snow-flyer reveal">
+        <a href="__SITE_IMAGE_snow-flyer__" target="_blank" rel="noopener" title="Open the full-size flyer">
+          <img src="__SITE_IMAGE_snow-flyer__" alt="Q&amp;M Lawncare Snow Services flyer: snow plowing and snow &amp; ice pre-treatment for driveways and parking lots, residential and commercial. Call (828) 263-7659." loading="lazy" width="1100" height="1320" />
+        </a>
+        <span class="snow-flyer-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> Tap to enlarge</span>
+      </div>
+      <div class="snow-copy reveal d1">
+        <span class="section-label snow-label"><i class="fa-regular fa-snowflake"></i> New This Winter</span>
+        <h2 class="section-title light">Snow Services</h2>
+        <p class="section-sub light">When the snow hits, we keep your driveway and lot clear, safe, and open for business.</p>
+
+        <div class="snow-svcs">
+          <div class="snow-svc">
+            <div class="snow-svc-icon"><i class="fa-solid fa-truck-pickup"></i></div>
+            <div>
+              <h3>Snow Plowing</h3>
+              <p>Fast, reliable clearing after every storm.</p>
+            </div>
+          </div>
+          <div class="snow-svc">
+            <div class="snow-svc-icon"><i class="fa-regular fa-snowflake"></i></div>
+            <div>
+              <h3>Snow &amp; Ice Pre-Treatment</h3>
+              <p>Treated before the storm so ice doesn't stick.</p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="snow-checks">
+          <li><i class="fa-solid fa-circle-check"></i> Driveways &amp; Parking Lots</li>
+          <li><i class="fa-solid fa-circle-check"></i> Residential &amp; Commercial</li>
+          <li><i class="fa-solid fa-circle-check"></i> Reliable &amp; Efficient Service</li>
+        </ul>
+
+        <div class="snow-btns">
+          <a href="#schedule" class="btn btn-bright" data-book-service="Snow Plowing">
+            <i class="fa-solid fa-calendar-check"></i> Book Snow Service
+          </a>
+          <a href="tel:8282637659" class="btn btn-outline-white">
+            <i class="fa-solid fa-phone"></i> (828) 263-7659
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="about">
   <div class="container">
@@ -1159,7 +1288,7 @@
 
         <!-- Form -->
         <form id="schedForm" onsubmit="submitSchedForm(event)">
-          <input type="hidden" name="_subject" value="New Service Request — Q&M Lawncare" />
+          <input type="hidden" name="_subject" value="__FORM_SUBJECT_PREFIX__New Service Request — Q&M Lawncare" />
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_template" value="table" />
 
@@ -1167,13 +1296,20 @@
             <label><i class="fa-solid fa-list-check" style="color:var(--green)"></i> &nbsp;What service do you need? *</label>
             <select name="Service" required>
               <option value="">-- Select a service --</option>
-              <option>Lawn Mowing &amp; Maintenance</option>
-              <option>Landscaping &amp; Hardscaping</option>
-              <option>Mulch Services</option>
-              <option>Fall Clean Up</option>
-              <option>Bush &amp; Tree Trimming</option>
-              <option>Aeration &amp; Fertilization</option>
-              <option>Spring Lawn Care Package</option>
+              <optgroup label="Snow Services (Winter)">
+                <option>Snow Plowing</option>
+                <option>Snow &amp; Ice Pre-Treatment</option>
+                <option>Snow Plowing + Pre-Treatment</option>
+              </optgroup>
+              <optgroup label="Lawn &amp; Landscape">
+                <option>Lawn Mowing &amp; Maintenance</option>
+                <option>Landscaping &amp; Hardscaping</option>
+                <option>Mulch Services</option>
+                <option>Fall Clean Up</option>
+                <option>Bush &amp; Tree Trimming</option>
+                <option>Aeration &amp; Fertilization</option>
+                <option>Spring Lawn Care Package</option>
+              </optgroup>
               <option>Free Estimate / Not Sure</option>
             </select>
           </div>
@@ -1203,6 +1339,8 @@
                 <option>Residential – Medium (¼–½ acre)</option>
                 <option>Residential – Large (½ acre+)</option>
                 <option>Commercial Property</option>
+                <option>Driveway Only (snow)</option>
+                <option>Parking Lot (snow)</option>
               </select>
             </div>
             <div class="fg">
@@ -1214,6 +1352,7 @@
                 <option>Bi-weekly (every 2 weeks)</option>
                 <option>Monthly</option>
                 <option>Seasonal</option>
+                <option>Every snowfall (on call)</option>
               </select>
             </div>
           </div>
@@ -1248,6 +1387,12 @@
           <div class="fg">
             <label><i class="fa-solid fa-note-sticky"></i> Additional Notes</label>
             <textarea name="Notes" placeholder="e.g. gate code, specific areas of concern, what you'd like to achieve..."></textarea>
+          </div>
+
+          <div class="form-error" id="schedError" role="alert">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            Sorry — your request didn't go through. Please try again, or call us at
+            <a href="tel:8282637659">(828) 263-7659</a>.
           </div>
 
           <div class="sched-submit-row">
@@ -1311,7 +1456,7 @@
         </div>
 
         <form id="contactForm" onsubmit="submitContactForm(event)">
-          <input type="hidden" name="_subject" value="New Message — Q&M Lawncare Website" />
+          <input type="hidden" name="_subject" value="__FORM_SUBJECT_PREFIX__New Message — Q&M Lawncare Website" />
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_template" value="table" />
           <div class="cf-fg">
@@ -1332,12 +1477,19 @@
               <option>Fall Clean Up</option>
               <option>Bush &amp; Tree Trimming</option>
               <option>Aeration &amp; Fertilization</option>
+              <option>Snow Plowing</option>
+              <option>Snow &amp; Ice Pre-Treatment</option>
               <option>Free Estimate</option>
             </select>
           </div>
           <div class="cf-fg">
             <label>Message</label>
             <textarea name="Message" placeholder="Tell us about your yard and what you're looking for..."></textarea>
+          </div>
+          <div class="form-error" id="contactError" role="alert">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            Sorry — your message didn't go through. Please try again, or call
+            <a href="tel:8282637659">(828) 263-7659</a>.
           </div>
           <button type="submit" id="contactSubmitBtn" class="btn btn-bright" style="width:100%;justify-content:center;">
             <i class="fa-solid fa-paper-plane"></i> Send Message
@@ -1376,6 +1528,7 @@
         <p>Fall Clean Up</p>
         <p>Aeration</p>
         <p>Bush &amp; Tree Trimming</p>
+        <p>Snow Plowing &amp; Ice Treatment</p>
       </div>
       <div class="fcol">
         <h4>Contact</h4>
@@ -1458,55 +1611,82 @@
   const dateEl = document.getElementById('schedDate');
   if (dateEl) dateEl.min = new Date().toISOString().split('T')[0];
 
+  /* ——— FORMS (delivered by formsubmit.co) ———
+     The address is filled in by the server (REDIRECT_ALL_EMAIL_TO while
+     testing). FormSubmit answers {success:"true"|"false", message}, so the
+     reply is checked — a rejected request must never show "Request Sent!". */
+  const FORM_EMAIL = '__FORM_EMAIL__';
+  async function sendForm(form) {
+    const res = await fetch('https://formsubmit.co/ajax/' + FORM_EMAIL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    });
+    let data = {};
+    try { data = await res.json(); } catch (_) {}
+    if (!res.ok || String(data.success) !== 'true') {
+      throw new Error(data.message || ('Request failed (' + res.status + ')'));
+    }
+  }
+  function showFormError(id, show) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = show ? 'block' : 'none';
+  }
+
   /* ——— SCHEDULE FORM ——— */
   async function submitSchedForm(e) {
     e.preventDefault();
     const btn = document.getElementById('schedSubmitBtn');
+    const form = document.getElementById('schedForm');
     btn.disabled = true;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
-    const form = document.getElementById('schedForm');
+    showFormError('schedError', false);
     try {
-      const res = await fetch('https://formsubmit.co/ajax/quinlanmarsh05@gmail.com', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(form)
-      });
+      await sendForm(form);
       form.style.display = 'none';
       document.getElementById('schedSuccess').style.display = 'block';
     } catch (err) {
-      form.action = 'https://formsubmit.co/quinlanmarsh05@gmail.com';
-      form.method = 'POST';
-      form.submit();
+      console.error('[booking] not sent:', err.message);
+      showFormError('schedError', true);
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Request';
     }
   }
   function resetSchedForm() {
     document.getElementById('schedForm').reset();
     document.getElementById('schedForm').style.display = '';
     document.getElementById('schedSuccess').style.display = 'none';
+    showFormError('schedError', false);
     const btn = document.getElementById('schedSubmitBtn');
     btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Request';
   }
 
+  /* "Book Snow Service" buttons pick the matching service in the form. */
+  document.querySelectorAll('[data-book-service]').forEach(a => {
+    a.addEventListener('click', () => {
+      const sel = document.querySelector('#schedForm select[name="Service"]');
+      if (sel) sel.value = a.dataset.bookService;
+    });
+  });
+
   /* ——— CONTACT FORM ——— */
   async function submitContactForm(e) {
     e.preventDefault();
     const btn = document.getElementById('contactSubmitBtn');
+    const form = document.getElementById('contactForm');
     btn.disabled = true;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
-    const form = document.getElementById('contactForm');
+    showFormError('contactError', false);
     try {
-      await fetch('https://formsubmit.co/ajax/quinlanmarsh05@gmail.com', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(form)
-      });
+      await sendForm(form);
       form.style.display = 'none';
       document.getElementById('contactSuccess').style.display = 'block';
     } catch (err) {
-      form.action = 'https://formsubmit.co/quinlanmarsh05@gmail.com';
-      form.method = 'POST';
-      form.submit();
+      console.error('[contact] not sent:', err.message);
+      showFormError('contactError', true);
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
     }
   }
 
@@ -1528,7 +1708,8 @@
       'fa-location-dot':'📍','fa-clock':'🕐','fa-handshake':'🤝','fa-circle-info':'ℹ',
       'fa-images':'🖼','fa-user':'👤','fa-rotate':'🔄','fa-note-sticky':'📝',
       'fa-paper-plane':'✈','fa-list-check':'✅','fa-comment-dots':'💬','fa-plus':'+',
-      'fa-grip':'⊞','fa-spinner':'⏳'
+      'fa-grip':'⊞','fa-spinner':'⏳','fa-snowflake':'❄️','fa-truck-pickup':'🛻',
+      'fa-circle-check':'✓','fa-circle-exclamation':'⚠️','fa-magnifying-glass-plus':'🔍'
     };
     document.querySelectorAll('i').forEach(function (el) {
       for (var c of Array.from(el.classList)) {
